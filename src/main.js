@@ -5,7 +5,6 @@ import { initData } from "./data.js";
 import { processFormData } from "./lib/utils.js";
 
 import { initTable } from "./components/table.js";
-// @todo: подключение
 import { initPagination } from "./components/pagination.js";
 import { initSorting } from "./components/sorting.js";
 import { initFiltering } from "./components/filtering.js";
@@ -34,16 +33,15 @@ function collectState() {
  * @param {HTMLButtonElement?} action
  */
 async function render(action) {
-  let state = collectState(); // состояние полей из таблицы
+  let state = collectState(); 
   let query = {};
-  // @todo: использование
   query = applySearching (query, state, action);
   query = applyFiltering(query, state, action);
   query = applySorting(query, state, action);
-  query = applyPagination(query, state, action); // обновляем query
+  query = applyPagination(query, state, action); 
 
-  const { total, items } = await api.getRecords(query); // запрашиваем данные с собранными параметрами
-  updatePagination(total, query); // перерисовываем пагинатор
+  const { total, items } = await api.getRecords(query); 
+  updatePagination(total, query); 
   sampleTable.render(items);
 }
 
@@ -57,11 +55,10 @@ const sampleTable = initTable(
   render
 );
 
-// @todo: инициализация
+
 const { applyPagination, updatePagination } = initPagination(
-  sampleTable.pagination.elements, // передаём сюда элементы пагинации, найденные в шаблоне
+  sampleTable.pagination.elements, 
   (el, page, isCurrent) => {
-    // и колбэк, чтобы заполнять кнопки страниц данными
     const input = el.querySelector("input");
     const label = el.querySelector("span");
     input.value = page;
@@ -72,7 +69,6 @@ const { applyPagination, updatePagination } = initPagination(
 );
 
 const applySorting = initSorting([
-  // Нам нужно передать сюда массив элементов, которые вызывают сортировку, чтобы изменять их визуальное представление
   sampleTable.header.elements.sortByDate,
   sampleTable.header.elements.sortByTotal,
 ]);
